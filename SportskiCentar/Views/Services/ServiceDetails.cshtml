@@ -1,0 +1,34 @@
+﻿@model SportskiCentar.Models.Service
+@{
+    ViewBag.Title = "ServiceDetails";
+    Layout = "~/Views/Shared/_LayoutForCart.cshtml";
+}
+
+<h2>ServiceDetails</h2>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <td colspan="2" class="customerDetails" style="font-size:medium;"><b>Service Information</b></td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="notHeader">
+            <td class="customerDetails" width="213px">Service Name</td>
+            <td class="customerDetails" width="120px">@Model.Name</td>
+        </tr>
+        <tr class="notHeader">
+            <td class="customerDetails" width="120px">Service Price</td>
+            <td class="customerDetails" width="120px">@Model.Price</td>
+        </tr>
+        <tr class="notHeader">
+            <td class="customerDetails" width="40px">Service Type</td>
+            <td class="customerDetails" width="40px">@Model.Type</td>
+        </tr>
+        <tr class="notHeader">
+            <td class="customerDetails" width="40px">Added By Employee</td>
+            <td class="customerDetails" width="40px">@Model.EmployeeJMBG</td>
+        </tr>
+        
+    </tbody>
+</table>

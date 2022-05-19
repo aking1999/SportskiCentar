@@ -1,0 +1,11 @@
+﻿body {
+}
+
+.customerDetails {
+    text-align: center;
+}
+
+.notHeader:hover td {
+    background-color: lightblue;
+    transition: 0.25s;
+}

@@ -1,0 +1,65 @@
+﻿@model SportskiCentar.Models.CreditCard
+@{
+    ViewBag.Title = "AddCreditCardForm";
+     Layout = "~/Views/Shared/_LayoutForCart.cshtml";
+}
+
+<h2>Edit Credit Card Information</h2>
+
+@using (Html.BeginForm("EditCreditCard", "Users", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(c => c.FirstName)
+        @Html.TextBoxFor(c => c.FirstName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(c => c.FirstName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(c => c.LastName)
+        @Html.TextBoxFor(c => c.LastName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(c => c.LastName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(c => c.Address)
+        @Html.TextBoxFor(c => c.Address, new { @class = "form-control" })
+        @Html.ValidationMessageFor(c => c.Address)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(c => c.CreditCardNumber)
+        @Html.TextBoxFor(c => c.CreditCardNumber, new { @class = "form-control" })
+        @Html.ValidationMessageFor(c => c.CreditCardNumber)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(c => c.PIN)
+        @Html.TextBoxFor(c => c.PIN, new { @class = "form-control" })
+        @Html.ValidationMessageFor(c => c.PIN)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(c => c.Balance)
+        @Html.TextBoxFor(c => c.Balance, new { @class = "form-control" })
+        @Html.ValidationMessageFor(c => c.Balance)
+    </div>
+
+
+
+    <div class="form-group">
+        @Html.LabelFor(c => c.PostalCode)
+        @Html.TextBoxFor(c => c.PostalCode, new { @class = "form-control" })
+        @Html.ValidationMessageFor(c => c.PostalCode)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(c => c.ExpirationDate)
+        @Html.TextBoxFor(c => c.ExpirationDate, new { @class = "form-control" })
+        @Html.ValidationMessageFor(c => c.ExpirationDate)
+    </div>
+
+    @Html.HiddenFor(c => c.CustomerJMBG)
+
+    <input type="submit" value="Save changes" class="btn btn-success" />
+}
+

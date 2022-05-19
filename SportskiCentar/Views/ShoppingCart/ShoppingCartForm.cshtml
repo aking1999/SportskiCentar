@@ -1,0 +1,163 @@
+﻿@model List<SportskiCentar.Models.Service>
+@{
+    ViewBag.Title = "ShoppingCartForm";
+    Layout = "~/Views/Shared/_LayoutForCart.cshtml";
+}
+@{
+    bool hasCreditCard = false;
+
+    decimal totalPrice = 0;
+    SportskiCentar.Models.SportskiCentarEntities entities = new SportskiCentar.Models.SportskiCentarEntities();
+    string currentUser = User.Identity.Name;
+    string userJMBG = entities.AspNetUsers.Where(u => u.UserName == currentUser).Single().JMBG;
+    if (userJMBG != null)
+    {
+        SportskiCentar.Models.Customer currentCustomer = entities.Customers.Where(c => c.JMBG == userJMBG).Single();
+        if (currentCustomer.CreditCards.Any())
+        {
+            hasCreditCard = true;
+        }
+    }
+
+}
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+
+
+@if (Model == null)
+{
+    <h2>Start shopping!</h2>
+}
+else
+{
+
+
+
+    if (!Model.Any())
+    {
+        <h2>There are no items in the shopping cart</h2>
+    }
+    else
+    {
+
+        <h1>Your Cart</h1>
+        using (Html.BeginForm("Checkout", "ShoppingCart", FormMethod.Post))
+        {
+            <table class="table table-bordered table-hover" style="margin-top: 15px;">
+                <thead>
+                    <tr>
+                        <td class="allCustomersTableHeader">Service Name</td>
+                        <td class="allCustomersTableHeader">Price</td>
+                        <td class="allCustomersTableHeader">Type</td>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        totalPrice += Convert.ToDecimal(Model[i].Price);
+                        <tr>
+                            <td class="allCustomersTableHover" style="width:250px;">@Model[i].Name</td>
+                            <td class="allCustomersTableHover" style="width:250px;">@Model[i].Price</td>
+                            <td class="allCustomersTableHover" style="width:250px;">@Model[i].Type</td>
+                            <td style="border:0.1px solid white;"><a id="delete" class="btn btn-danger" onclick="DeleteDialogBox('@Model[i].Name',@Model[i].ServiceID);">Remove</a></td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        }
+
+        <p><b>Total: @totalPrice</b></p>
+        if (hasCreditCard)
+        {
+            <tr><td style="border:0.1px solid white;"><button id="btn" type="submit" class="btn btn-info" onclick="CheckoutDialogBox(event,@totalPrice)">Checkout</button></td></tr>
+        }
+        else
+        {
+            @Html.ActionLink("Add Credit Card", "AddCreditCardForm", "Customers", new { @id = userJMBG }, new { @class = "btn btn-primary" });
+        }
+    }
+}
+
+<script>
+
+    function PurchaseOK() {
+        document.addEventListener('DOMContentLoaded', function () { toastr.success("Your purchase is successful!"); });
+
+    }
+    function PurchaseBad() {
+        document.addEventListener('DOMContentLoaded', function () { toastr.error("You don't have enough balance for this payment"); });
+
+    }
+
+    function CheckoutDialogBox(event, price) {
+        document.getElementById('btn').addEventListener('click', function (event) { event.preventDefault() });
+        bootbox.confirm({
+            message: "Total amount is " + price + ". Are you sure that you want to checkout?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    window.location.href = '/ShoppingCart/Checkout';
+                }
+            }
+        });
+    }
+
+
+    function DeleteDialogBox(Name, ServiceID) {
+
+        bootbox.confirm({
+            message: "Are you sure that you want to delete service " + Name + "?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    window.location.href = '/ShoppingCart/Delete?Id=' + ServiceID;
+                }
+            }
+        });
+    }
+</script>
+
+@*Za notifikacije o uspesnosti kupovine*@
+@if (TempData["CheckoutOK"] != null)
+{
+    if (TempData["CheckoutOK"].ToString() == "true")
+    {
+        <script>
+               @Html.Raw("PurchaseOK()");
+        </script>
+    }
+    else
+    {
+        if (TempData["CheckoutOK"].ToString() == "false")
+        {
+            <script>
+                    @Html.Raw("PurchaseBad();");
+            </script>
+        }
+    }
+}

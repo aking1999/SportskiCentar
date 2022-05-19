@@ -1,0 +1,79 @@
+﻿@model List<SportskiCentar.Models.Service>
+@{
+    ViewBag.Title = "AllServices";
+  //  if (ViewBag.ShowCart < 0 || ViewBag.ShowCart == null)
+  //  {
+      //  Layout = "~/Views/Shared/_Layout.cshtml";
+  //  }
+   // else
+   // {
+        Layout = "~/Views/Shared/_LayoutForCart.cshtml";
+
+    //}
+
+}
+
+@{
+    int btnId = 0;
+}
+<h2>Our services</h2>
+<script src="https://kit.fontawesome.com/e8be4b0efb.js" crossorigin="anonymous"></script>
+
+
+@if (!Model.Any())
+{
+    <h2>No services available yet.</h2>
+
+}
+else
+{
+    using (Html.BeginForm("AddToCart", "Services", FormMethod.Post))
+    {
+        <table class="table table-bordered table-hover" style="margin-top: 15px;">
+            <thead>
+                <tr>
+                    <td class="allCustomersTableHeader">Service Name</td>
+                    <td class="allCustomersTableHeader">Price</td>
+                    <td class="allCustomersTableHeader">Type</td>
+                    <td class="allCustomersTableHeader">@Html.ActionLink("Search Services", "SearchServicesForm", "Services", new object(), new { @class = "btn btn-success" })</td>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (SportskiCentar.Models.Service c in Model)
+                {
+                    btnId = c.ServiceID;
+                    <tr>
+                        <td class="allCustomersTableHover" style="width:250px;">@c.Name</td>
+                        <td class="allCustomersTableHover" style="width:250px;">@c.Price</td>
+                        <td class="allCustomersTableHover" style="width:250px;">@c.Type</td>
+                        <td style="border:0.1px solid white;">
+                            <button onclick="CartNumNotification(@c.ServiceID)" type="button" class="btn btn-info" style="color:black;"><i class="fas fa-shopping-cart">Add To Cart</i></button>
+                            <!-- <button value=@btnId name="submit" type="submit" class="btn btn-info" style="color:black;"><i class="fas fa-shopping-cart">Add To Cart</i></button>-->
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+<script>
+    function CartNumNotification(id) {
+        var ServiceID = id;
+        var url = '/ShoppingCart/Test';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: { id: ServiceID },
+            success: function (incomingData) {
+                document.getElementById('showNumOfItems').innerText = incomingData;
+            },
+            error: function (result) {
+                alert("There was an error.");
+            }
+        });
+    }
+</script>

@@ -1,0 +1,184 @@
+﻿@model List<SportskiCentar.Models.Customer>
+@{
+    ViewBag.Title = "AllCustomers";
+    Layout = "~/Views/Shared/_LayoutForCart.cshtml";
+}
+
+
+@{
+    int idZaDugmad = 0;
+    int idZaInputPolja = 100;
+
+}
+@*Dodao u bundle za lumen(css) i toastr(css i javascript), takodje instalirao toastr preko package manager *@
+<link rel="stylesheet" href="~/Content/AllCustomersTableHover.css?v=23" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+
+
+@if (!Model.Any())
+{
+    <h2>No customers available yet.</h2>
+    @Html.ActionLink("New Customer", "AddNewCustomerForm", "Customers", new { @class = "btn btn-primary", @style = "margin-top:15px;" });
+}
+else
+{
+    @Html.ActionLink("New Customer", "AddNewCustomerForm", "Customers", new { @class = "btn btn-primary", @style = "margin-top:15px;" });
+    //pocinje tabela koja se nalazi u formi
+    using (Html.BeginForm("SaveEdited", "Customers", FormMethod.Post))
+    {
+        <table class="table table-bordered table-hover" style="margin-top: 15px;" id="table">
+            <thead>
+                <tr>
+                    <td class="allCustomersTableHeader">First Name</td>
+                    <td class="allCustomersTableHeader">Last Name</td>
+                    <td class="allCustomersTableHeader">Address</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+
+                @*Promeni sam sa foreach na for da bi mogao da popunjavam html.TextBoxFor inace ne radi(trazi ekspilicitno navodjenje tipa parametara, m=>m[i].FirstName)*@
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    <tr>
+
+                        <td class="allCustomersTableHover" width="300px">@Html.ActionLink(Model[i].FirstName, "CustomerDetails", "Customers", new { id = Model[i].JMBG }, new object())</td>
+                        <td class="allCustomersTableHover">@Model[i].LastName</td>
+                        <td class="allCustomersTableHover">@Model[i].Address</td>
+                        @* <td width="50px" id="editDugme">@Html.ActionLink("Edit", "Edit", "Customers", new { id = Model[i].JMBG }, new { @class = "btn btn-info" })</td>*@
+
+                        @*Dugme za otvaranje reda za menjanje informacija o korisniku(Spustanje), dat mu je idZaDugmad kako bi znao tacno koje dugme je pritisnuto i koji red treba da se prikaze (dugmeID==trID+50)*@
+                        <td width="50px"><button type="button" class="btn btn-info" id=@idZaDugmad onclick="Spustanje(this)">Edit</button></td>
+                        <td><a id="delete" class="btn btn-danger" onclick="DeleteDialogBox(@Model[i].JMBG, '@Model[i].FirstName', '@Model[i].LastName');">Delete</a></td>
+
+                    </tr>
+
+                    idZaDugmad += 50;
+                    @*Dodat idZaInputPolja kako bih mogao u ActionResult-u da pronadjem text polje u kome su promenjene vrednosti a svaki red takodje ima ID koji je == idZaDugmad+50 kako bih preko pritisnutog dugmeta saznao koji je red.
+                        Na ovaj nacin svako textbox u tabeli ima poseban id koji se sastoji iz imena+idZaInputPolja*@
+                    <tr class="inActiveRow" id=@idZaDugmad>
+                        <td>
+                            @Html.TextBoxFor(m => m[i].FirstName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m[i].FirstName)
+                        </td>
+
+
+                        <td>
+                            @Html.TextBoxFor(m => m[i].LastName, new { @class = "form-control", /*@Name*/@id = "Prezime" + idZaInputPolja })
+                            @Html.ValidationMessageFor(m => m[i].LastName)
+                        </td>
+
+                        <td>
+                            @Html.TextBoxFor(m => m[i].Address, new { @class = "form-control", /*@Name*/ @id = "Adresa" + idZaInputPolja })
+                            @Html.ValidationMessageFor(m => m[i].Address)
+                        </td>
+
+                        @*value od dugmeta izvlacimo posle i preko njega pronalazimo redove u tabeli koji su izmenjeni*@
+                        <td colspan="2" style="text-align:center;"><button name="submit" type="submit" value=@idZaInputPolja class="btn btn-success submitButton btnChangeRecords" id=@idZaInputPolja>Save Changes</button></td>
+                        <td style="padding:0;">@Html.HiddenFor(m => m[i].JMBG, new { /*@Name*/@id = "JMBG" + idZaInputPolja })</td>
+                    </tr>
+
+                    idZaInputPolja++;
+                    idZaDugmad -= 50;
+                    idZaDugmad++;
+                }
+
+            </tbody>
+        </table>
+    }
+}
+<script type="text/javascript">
+    var globalID;
+    function Spustanje(button) {
+        var id = button.id;
+        sessionStorage.setItem('stayOpen', id);
+
+        if (document.getElementById(parseInt(id) + parseInt(50)).className == "inActiveRow")
+
+            document.getElementById(parseInt(id) + parseInt(50)).className = "activeRow";
+        else
+            document.getElementById(parseInt(id) + parseInt(50)).className = "inActiveRow";
+    }
+    //da ostane red otvoren posle reload-a stranice
+    function StayOpen() {
+
+        globalID = sessionStorage.getItem('stayOpen');
+        document.getElementById(parseInt(globalID) + parseInt(50)).className = "activeRow";
+    }
+    //za prikazivanje notifikacije o brisanju nakoon reload-a stranice
+    function displayToastr() {
+        document.addEventListener('DOMContentLoaded', function () { toastr.success("Customer successfully deleted."); });
+    }
+
+    function NewCustomerNotification() {
+        document.addEventListener('DOMContentLoaded', function () { toastr.success("Customer successfully created."); });
+    }
+
+    function CustomerUpdatedNotification() {
+        document.addEventListener('DOMContentLoaded', function () { toastr.success("Customer successfully updated."); });
+        //kad se klikne na back pa se vrati na stranicu da ne izlazi opet notifikacija
+        setTimeout(function () {
+            document.location.reload(true);
+        }, 2000);
+    }
+
+    //dialogbox za brisanje korisnika
+    function DeleteDialogBox(id, firstName, lastName) {
+        bootbox.confirm({
+            message: "Are you sure that you want to delete customer " + firstName + " " + lastName + "?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    window.location.href = '/Customers/Delete?Id=' + id;
+                }
+            }
+        });
+    }
+
+</script>
+
+@*Kada validacija ne prodje u tabeli kad se ponovo ucita tabela da bude automatski otvoren taj red i to polje koje ne valja(funkcija-stayOpen)*@
+
+@if (ViewBag.JavaScriptFunction != null)
+{
+    <script>
+        @Html.Raw(ViewBag.JavaScriptFunction)
+    </script>
+}
+@*Za toast-er*@
+@if (ViewBag.DisplayToastr != null)
+{
+    <script>
+        @Html.Raw(ViewBag.DisplayToastr);
+    </script>
+}
+@*Za novog korisnika*@
+@if (ViewBag.NewCustomerNotification != null)
+{
+    <script>
+        @Html.Raw(ViewBag.NewCustomerNotification);
+    </script>
+}
+
+@if (TempData["CustomerUpdatedNotification"] != null)
+{
+    <script>
+        @Html.Raw("CustomerUpdatedNotification()");
+    </script>
+
+}
+

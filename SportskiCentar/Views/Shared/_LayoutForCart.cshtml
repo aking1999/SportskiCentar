@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="https://kit.fontawesome.com/f1b84040c0.js" crossorigin="anonymous"></script>
+
+
+</head>
+@{
+
+    int num = 0;
+    if (ViewBag.ShowCart != null)
+    {
+        num = @ViewBag.ShowCart;
+        @ViewBag.ShowCart = -1;
+
+    }
+
+}
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Sportski Centar", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    @if (User.IsInRole("Employee"))
+                    {
+                        <li>@Html.ActionLink("Manage Customers", "AllCustomers", "Customers")</li>
+                        <li>@Html.ActionLink("Manage Services", "AllServices", "EmployeeServices")</li>
+                    }
+
+
+                    @if (!User.IsInRole("Employee"))
+                    {
+                        <li>@Html.ActionLink("Services", "AllServices", "Services")</li>
+                    }
+
+
+                    @if (User.Identity.IsAuthenticated && !User.IsInRole("Employee"))
+                    {
+
+                        <li>@Html.ActionLink("Account", "UserDetails", "Users")</li>
+                        //<li>@Html.ActionLink("Cart(" + @num + ")", "ShoppingCartForm", "ShoppingCart", null, new { @style = "color:red;", @id = "CartLink" })</li>
+                        <li>
+                            <a href="@Url.Action("ShoppingCartForm","ShoppingCart")" id="CartLink">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Your Cart</span>
+                                <div class="badge qty" id="showNumOfItems">@num</div>
+                            </a>
+                        </li>
+                    }
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+
+
+
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - All rights reserved by Sportski Centar</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

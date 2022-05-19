@@ -1,0 +1,97 @@
+﻿body {
+}
+
+
+.aleksiniDugmici{
+
+}
+
+.allCustomersTableHeader {
+    text-align: center;
+    width:400px !important;
+}
+
+.allCustomersTableHover{
+    text-align: center;
+}
+
+.allCustomersTableHover:hover {
+    background-color: #7CFC00;
+    transition: 0.25s;
+}
+
+
+#editDugme{
+    text-align:center;
+}
+
+.inActiveRow {
+    font-size: 0;
+    margin: 0;
+    max-height: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+    transition: max-height 0.3s, padding 0.3s;
+}
+
+.inActiveRow td{
+    padding:0;
+    max-height: 0;
+    padding: 0 !important;
+    transition: max-height 0.3s, padding 0.3s;
+    border:1px solid white !important;
+    padding:0;
+    border:none !important;
+
+}
+
+
+.inActiveRow input{
+    max-height:0;
+    padding:0;
+    border:none;
+}
+
+.activeRow input{
+    max-height:100px;
+}
+
+.activeRow {
+    max-height: 100px;
+    padding: 10px 10px;
+    /* ovo je za kad se otvara*/
+    transition: max-height 0.6s, padding 0.6s !important;
+}
+
+
+.activeRow td {
+    max-height: 100px;
+    padding: 10px 10px;
+    text-align:center;
+    /* ovo je za kad se otvara*/
+    transition: max-height 0.6s, padding 0.6s !important;
+}
+
+
+
+
+.inActiveRow .btnChangeRecords {
+    font-size: 0;
+    margin: 0;
+    max-height: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+    transition: max-height 0.3s, padding 0.3s;
+    border:none;
+}
+
+
+
+.ActiveRow .btnChangeRecords {
+    max-height: 100px;
+    padding: 10px 10px;
+    /* ovo je za kad se otvara*/
+    transition: max-height 0.6s, padding 0.6s !important;
+}
+
+

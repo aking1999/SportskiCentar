@@ -1,0 +1,16 @@
+﻿@model object
+
+@{
+    ViewBag.Title = "Error";
+}
+
+<style>
+    .errorPage{
+        display: block;
+        margin: auto;
+    }
+</style>
+
+<h1 class="text-danger">@Model</h1>
+@Html.ActionLink("Back", "", "", "", new { @class = "btn btn-success errorPage" })
+

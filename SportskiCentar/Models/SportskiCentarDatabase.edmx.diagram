@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="771fb58ab03245deb97ca6bcda7bb55e" Name="Diagram1" ZoomLevel="74">
+        <EntityTypeShape EntityType="SportskiCentarEngleskiModel.CreditCard" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SportskiCentarEngleskiModel.Customer" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SportskiCentarEngleskiModel.Employee" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SportskiCentarEngleskiModel.Service" Width="1.5" PointX="3" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SportskiCentarEngleskiModel.ShoppingCart" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SportskiCentarEngleskiModel.ShoppingCartItem" Width="1.5" PointX="5.25" PointY="4.25" IsExpanded="true" />
+        <AssociationConnector Association="SportskiCentarEngleskiModel.FK__CreditCar__Custo__3F466844" ManuallyRouted="false" />
+        <AssociationConnector Association="SportskiCentarEngleskiModel.FK__ShoppingC__Custo__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="SportskiCentarEngleskiModel.FK__Service__Employe__3B75D760" ManuallyRouted="false" />
+        <AssociationConnector Association="SportskiCentarEngleskiModel.FK__ShoppingC__Servi__46E78A0C" ManuallyRouted="false" />
+        <AssociationConnector Association="SportskiCentarEngleskiModel.FK__ShoppingC__Shopp__45F365D3" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SportskiCentarEngleskiModel.C__MigrationHistory" Width="1.5" PointX="5.375" PointY="7.75" />
+        <EntityTypeShape EntityType="SportskiCentarEngleskiModel.AspNetRole" Width="1.5" PointX="7.375" PointY="2.5" />
+        <EntityTypeShape EntityType="SportskiCentarEngleskiModel.AspNetUserClaim" Width="1.5" PointX="11.875" PointY="1" />
+        <EntityTypeShape EntityType="SportskiCentarEngleskiModel.AspNetUserLogin" Width="1.5" PointX="11.875" PointY="3.75" />
+        <EntityTypeShape EntityType="SportskiCentarEngleskiModel.AspNetUser" Width="1.5" PointX="9.625" PointY="1.375" />
+        <AssociationConnector Association="SportskiCentarEngleskiModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="SportskiCentarEngleskiModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="SportskiCentarEngleskiModel.AspNetUserRoles" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

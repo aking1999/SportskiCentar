@@ -1,0 +1,25 @@
+﻿@model SportskiCentar.Helpers.CustomerSearchService
+@{
+    ViewBag.Title = "SearchServicesForm";
+     Layout = "~/Views/Shared/_LayoutForCart.cshtml";
+}
+
+<h2>Search Services Form</h2>
+
+@using (Html.BeginForm("SearchServices", "Services", FormMethod.Post))
+{
+    <h3>@Html.ValidationSummary()</h3>
+
+    <div class="form-group">
+        @Html.LabelFor(c => c.Name)
+        @Html.TextBoxFor(c => c.Name, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(c => c.Price)
+        @Html.TextBoxFor(c => c.Price, new { @class = "form-control" })
+    </div>
+
+    <input type="submit" value="Search" class="btn btn-success" />
+}
+

@@ -1,0 +1,34 @@
+﻿@model SportskiCentar.Models.Service
+@{
+    ViewBag.Title = "AddNewServiceForm";
+    Layout = "~/Views/Shared/_LayoutForCart.cshtml";
+}
+
+<h2>New Service</h2>
+
+@using (Html.BeginForm("AddNewService", "EmployeeServices", FormMethod.Post))
+{
+
+    <div class="form-group">
+        @Html.LabelFor(c => c.Name)
+        @Html.TextBoxFor(c => c.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(c => c.Name)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(c => c.Type)
+        @Html.TextBoxFor(c => c.Type, new { @class = "form-control" })
+        @Html.ValidationMessageFor(c => c.Type)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(c => c.Price)
+        @Html.TextBoxFor(c => c.Price, new { @class = "form-control" })
+        @Html.ValidationMessageFor(c => c.Price)
+    </div>
+    
+
+
+    <button type="submit" class="btn btn-success">Save</button>
+}
+

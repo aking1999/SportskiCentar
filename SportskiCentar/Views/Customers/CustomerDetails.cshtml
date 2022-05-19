@@ -1,0 +1,128 @@
+﻿@model SportskiCentar.Models.Customer
+@{
+    ViewBag.Title = "CustomerDetails";
+     Layout = "~/Views/Shared/_LayoutForCart.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/CustomerDetailsTableHover.css" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <td colspan="2" class="customerDetails" style="font-size:medium;"><b>Details</b></td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="notHeader">
+            <td class="customerDetails" width="120px">First Name</td>
+            <td class="customerDetails" width="40px">@Model.FirstName</td>
+        </tr>
+        <tr class="notHeader">
+            <td class="customerDetails" width="40px">Last Name</td>
+            <td class="customerDetails" width="40px">@Model.LastName</td>
+        </tr>
+        <tr class="notHeader">
+            <td class="customerDetails" width="40px">JMBG</td>
+            <td class="customerDetails" width="40px">@Model.JMBG</td>
+        </tr>
+        <tr class="notHeader">
+            <td class="customerDetails" width="40px">Address</td>
+            <td class="customerDetails" width="40px">@Model.Address</td>
+        </tr>
+    </tbody>
+</table>
+
+@if (Model.CreditCards.Count != 0)
+{
+
+    @Html.ActionLink("Modify credit card information", "ModifyCreditCardForm", "Customers", new { @id = Model.JMBG }, new { @class = "btn btn-primary", @style = "margin-right:10px;" })
+    //@Html.ActionLink("Delete credit card ", "DeleteCreditCard", "Customers", new { @id = Model.CreditCards.ElementAt(0).CreditCardNumber, @jmbg = Model.CreditCards.ElementAt(0).CustomerJMBG }, new { @class = "btn btn-primary" })
+    <a id="delete" class="btn btn-danger" onclick="DeleteDialogBox(@Model.CreditCards.ElementAt(0).CreditCardNumber,@Model.CreditCards.ElementAt(0).CustomerJMBG);">Delete credit card</a>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <td colspan="2" class="customerDetails" style="font-size:medium;"><b>Credit Card Information</b></td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="notHeader">
+                <td class="customerDetails" width="213px">Credit Card First Name</td>
+                <td class="customerDetails" width="120px">@Model.CreditCards.ElementAt(0).FirstName</td>
+            </tr>
+            <tr class="notHeader">
+                <td class="customerDetails" width="120px">Credit Card Last Name</td>
+                <td class="customerDetails" width="120px">@Model.CreditCards.ElementAt(0).LastName</td>
+            </tr>
+            <tr class="notHeader">
+                <td class="customerDetails" width="40px">Credit Card Number</td>
+                <td class="customerDetails" width="40px">@Model.CreditCards.ElementAt(0).CreditCardNumber</td>
+            </tr>
+            <tr class="notHeader">
+                <td class="customerDetails" width="40px">Credit Card PIN</td>
+                <td class="customerDetails" width="40px">@Model.CreditCards.ElementAt(0).PIN</td>
+            </tr>
+            <tr class="notHeader">
+                <td class="customerDetails" width="40px">Balance</td>
+                <td class="customerDetails" width="40px">@Model.CreditCards.ElementAt(0).Balance</td>
+            </tr>
+            <tr class="notHeader">
+                <td class="customerDetails" width="40px">Credit Card Expiration Date</td>
+                <td class="customerDetails" width="40px">@Model.CreditCards.ElementAt(0).ExpirationDate</td>
+            </tr>
+
+            <tr class="notHeader">
+                <td class="customerDetails" width="40px">Credit Card Address</td>
+                <td class="customerDetails" width="40px">@Model.CreditCards.ElementAt(0).Address</td>
+            </tr>
+            <tr class="notHeader">
+                <td class="customerDetails" width="40px">Credit Card Postal Code</td>
+                <td class="customerDetails" width="40px">@Model.CreditCards.ElementAt(0).PostalCode</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+}
+else
+{
+    <h3>No credit card added yet.</h3>
+    @Html.ActionLink("Add credit card", "AddCreditCardForm", "Customers", new { @id = Model.JMBG }, new { @class = "btn btn-primary" })
+}
+
+<script>
+    function DeleteDialogBox(id, JMBG) {
+        bootbox.confirm({
+            message: "Are you sure that you want to delete the credit card ?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    window.location.href = '/Customers/DeleteCreditCard?Id=' + id + '&JMBG=' + JMBG;
+                }
+            }
+        });
+    }
+
+    function displayToastr() {
+        document.addEventListener('DOMContentLoaded', function () { toastr.success("Credit card successfully deleted."); });
+    }
+</script>
+
+@if (ViewBag.CreditCardDeleteToastr != null)
+{
+    <script>
+        @Html.Raw(ViewBag.CreditCardDeleteToastr);
+    </script>
+}
